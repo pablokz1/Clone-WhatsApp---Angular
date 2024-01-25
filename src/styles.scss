@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@use './assets/styles/colors.scss' as *;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $background-3;
+    font-size: 1.4rem;
+
+    * {
+        box-sizing: border-box;
+        color: $fonte;
+    }
+}

@@ -1,4 +1,5 @@
-@use './assets/styles/colors.scss' as *;
+@use "colors" as *;
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&display=swap');
 
 body {
     margin: 0;
@@ -9,5 +10,6 @@ body {
     * {
         box-sizing: border-box;
         color: $fonte;
+        font-family: 'Dosis', sans-serif;
     }
 }

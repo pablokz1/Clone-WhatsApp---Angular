@@ -3,6 +3,11 @@ import { LoginPageComponent } from '../users/pages/login-page/login-page/login-p
 
 export const routes: Routes = [
     {
+        path: "",
+        redirectTo: "login",
+        pathMatch: "full"
+    },
+    {
         path: "login",
         component: LoginPageComponent
     }

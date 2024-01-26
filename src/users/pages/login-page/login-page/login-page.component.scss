@@ -1,3 +1,28 @@
+@use "colors" as *;
+
 :host {
-  display: block;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.container {
+  padding: 20px;
+  width: 50vw;
+  background-color: $background-2;
+
+  input {
+    display: none;
+  }
+
+  .user {
+    background-color: $background;
+    margin-top: 10px;
+    padding: 10px 20px;
+
+    button {
+      color: black;
+    }
+  }
 }

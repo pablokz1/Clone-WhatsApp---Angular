@@ -1,6 +1,10 @@
 @use "colors" as *;
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&display=swap');
 
+.red {
+    background-color: red;
+}
+
 body {
     margin: 0;
     padding: 0;

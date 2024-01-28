@@ -29,12 +29,25 @@
       background-color: $background-3;
     }
 
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
+
     button {
       color: $fonte;
       font-size: 1em;
       background-color: transparent;
       border: 1px solid $fonte;
       cursor: pointer;
+
+      &:hover {
+        background-color: $fonte;
+        color: $background-2;
+      }
     }
   }
 }

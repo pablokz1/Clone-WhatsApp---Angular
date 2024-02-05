@@ -11,6 +11,7 @@ import { LocalDb } from '../local-db/local-db';
 export class UserService {
   private http = inject(HttpClient);
   private urlApi = `${environment.urlApi}User`;
+  private urlAuthApi = `${environment.urlApi}Auth`;
 
   getUsers() {
     return this.http.get<User[]>(`${this.urlApi}`).pipe(
@@ -67,5 +68,9 @@ export class UserService {
     const formData = new FormData();
     formData.append('file', blobImage);
     return this.http.put(`${this.urlApi}/${userId}/image`, formData);
+  }
+
+  login(userId: string) {
+    return this.http.post(this.urlAuthApi, {userId})
   }
 }

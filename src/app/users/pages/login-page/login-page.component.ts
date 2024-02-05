@@ -13,7 +13,7 @@ import { AsyncPipe } from '@angular/common';
       <input type="file" #input (change)="onFileSelected($event)" />
 
       @for (userImage of users$ | async; track userImage.user.id) {
-      <div class="user">
+      <div class="user" (click)="login(userImage.user.id)">
         @if(userImage.imageUrl){
           <img [src]="userImage.imageUrl" />
         }
@@ -28,6 +28,7 @@ import { AsyncPipe } from '@angular/common';
   `,
   styleUrl: './login-page.component.scss',
 })
+
 export class LoginPageComponent {
   @ViewChild('input', { static: true, read: ElementRef })
   inputFile!: ElementRef;
@@ -66,5 +67,9 @@ export class LoginPageComponent {
   onImageButtonClicked(userId: string) {
     this.lastUserIdClicked = userId;
     this.inputFile.nativeElement.click();
+  }
+
+  login(userId: string) {
+    this.userService.login(userId).subscribe(console.log)
   }
 }

@@ -1,9 +1,12 @@
+import { Router } from '@angular/router';
+import { UserStorageInfo } from './user-storage-info.model';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, effect, inject, signal } from '@angular/core';
 import { User } from './user.model';
 import { environment } from '@@environment/environment';
 import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { LocalDb } from '../local-db/local-db';
+import { AuthLoginResponse } from './auth-login-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +15,16 @@ export class UserService {
   private http = inject(HttpClient);
   private urlApi = `${environment.urlApi}User`;
   private urlAuthApi = `${environment.urlApi}Auth`;
+  private userInfo = signal<UserStorageInfo | null>(null);
+  private router = inject(Router);
+
+  constructor() {
+    effect(() => this.syncuserInfoLocalStorage());
+  }
+
+  syncuserInfoLocalStorage(){
+    localStorage.setItem('UserData', JSON.stringify(this.userInfo()));
+  }
 
   getUsers() {
     return this.http.get<User[]>(`${this.urlApi}`).pipe(
@@ -71,6 +84,48 @@ export class UserService {
   }
 
   login(userId: string) {
-    return this.http.post(this.urlAuthApi, {userId})
+    return this.http.post<AuthLoginResponse>(this.urlAuthApi, { userId })
   }
+
+  setCurrentUser(user: UserStorageInfo) {
+    this.userInfo.set(user);
+  }
+
+  getUserInfoSignal() {
+    return this.userInfo.asReadonly();
+  }
+
+  isUserLogged() {
+    return !!this.userInfo();
+  }
+
+  trySyncLocalStorage() {
+    if (this.isLocalStorageAvailable()) {
+      const localStorageData = localStorage.getItem('UserData');
+
+      if (localStorageData) {
+        const userData: UserStorageInfo = JSON.parse(localStorageData);
+        this.userInfo.set(userData);
+      }
+    } else {
+      console.error('O localStorage não está disponível neste ambiente.');
+    }
+  }
+
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const testKey = '__test__';
+      localStorage.setItem(testKey, testKey);
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  logout(){
+    this.userInfo.set(null);
+    this.router.navigate(['login']);
+  }
+
 }
